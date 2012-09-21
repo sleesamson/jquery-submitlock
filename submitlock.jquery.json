@@ -1,0 +1,22 @@
+{
+    "name": "submitlock",
+    "version": "1.1.0",
+    "title": "jQuery SubmitLock",
+    "description": "This plugin will lock the buttons on a form when it is submitted in an attempt to prevent users from accidently double-submitting forms.",
+    "keywords": [
+        "forms"
+    ],
+    "homepage": "https://github.com/twigtek/jquery-submitlock",
+    "author": {
+        "name": "TwigTek, Inc",
+        "url": "https://github.com/twigtek"
+    },
+    "licenses": [
+        "type": "MIT",
+        "url": "https://raw.github.com/twigtek/jquery-submitlock/v1.0.0/LICENSE"
+    ],
+    "dependencies": {
+        "jquery": ">=1.7"
+    }
+}
+

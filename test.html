@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <title>jQuery SubmitLock Plugin Testing</title>
-    <script src="http://code.jquery.com/jquery-1.4.4.min.js"></script>
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script src="jquery.submitlock.js"></script>
     <script>
         $(document).ready(function() {
@@ -19,6 +19,9 @@
             });
 
             $('form').submitLock();
+            $('form.catch-locked').on('locked', function(event) {
+                console.log('locked ' + $(this).attr('id'));
+            });
         });
     </script>
     <style type="text/css">
@@ -67,8 +70,12 @@
 </form>
 
 <form id="form_eight">
-    <a href="#somewhere"><button>Eight: Button</button></a>
+    <a href="#somewhere"><button>Eight: A-Button</button></a>
     <input type="submit" value="Eight: Submit" />
+</form>
+
+<form id="form_nine" class="catch-locked">
+    <input type="submit" value="Nine: Submit" />
 </form>
 
 

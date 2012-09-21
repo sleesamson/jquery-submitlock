@@ -1,52 +1,80 @@
 /*
- * jQuery SubmitLock Plugin v1
- * https://bitbucket.org/twigtek/jquery-plugins
+ * jQuery SubmitLock Plugin v1.1.0
+ * https://github.com/twigtek/jquery-submitlock
  */
+
+'use strict';
 
 (function($) {
     $.fn.submitLock = function(options) {
         var settings = {
-            includeButtons: true, // Whether or not to lock <button /> and <input type="button" />.
-            classes:        'submitLockDisabled', // The class(es) to add to the elements being locked.
-            disable:        false // Whether or not to set the 'disabled' attribute on the elements being locked.
+            // Whether or not to lock <button> and <input type="button"> elements.
+            includeButtons: true,
+
+            // Whether or not to lock <input type="reset"> elements.
+            includeResets: true,
+
+            // The class(es) to add to the elements being locked.
+            classes: 'submitLockDisabled',
+
+            // Whether or not to set the 'disabled' attribute on the elements being locked.
+            // This is optional because setting this prevents some browsers from sending the value
+            // of the input button along with the rest of the form data.
+            disable: false
         };
+
         if (options) {
             $.extend(settings, options);
         }
 
-        return this.each(function() {
-            if ($(this).is('form')) {
-                $(this).submit(function() {
-                    $(this).find('input[type=submit]')
-                        .addClass(settings.classes)
-                        .click(function() {
-                            return false;
-                        });
-                    if (settings.disable) {
-                        $(this).find('input[type=submit]').attr('disabled', 'true');
-                    }
+        function lock($buttons) {
+            // Tag them with the classes.
+            $buttons.addClass(settings.classes);
 
-                    if (settings.includeButtons) {
-                        $(this).find('button,input[type=button]')
-                            .addClass(settings.classes)
-                            .click(function() {
-                                return false;
-                            })
-                            .parents('a').click(function() {
-                                return false;
-                            });
-                        if (settings.disable) {
-                            $(this).find('button,input[type=button]').attr('disabled', 'true');
-                        }
-                    }
-                });
+            // Remove any events that may have been attached to them.
+            $buttons.off('click');
+
+            // Prevent the default browser processing of the event.
+            $buttons.on('click', false);
+
+            if (settings.disable) {
+                $buttons.attr('disabled', 'true');
             }
+        }
+
+        return this.each(function() {
+            var $form = $(this);
+
+            if (!$form.is('form')) { return; }
+
+            $form.one('submit', function(event) {
+                lock($form.find('input[type=submit], input[type=image]'));
+
+                if (settings.includeButtons) {
+                    var $buttons = $form.find('button, input[type=button]');
+
+                    lock($buttons);
+
+                    // Sometimes <button>s get wrapped in an <a> to just act as a link.
+                    // Take care of these, too.
+                    $buttons.parents('a')
+                        .off('click')
+                        .on('click', false)
+                        ;
+                }
+
+                if (settings.includeResets) {
+                    lock($form.find('input[type=reset]'));
+                }
+
+                $form.trigger('locked');
+            });
         });
     };
-})(jQuery);
+}(jQuery));
 
 /*
- * Copyright (c)2011 TwigTek, Inc
+ * Copyright (c)2012 TwigTek, Inc
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal

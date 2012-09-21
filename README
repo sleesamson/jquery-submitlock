@@ -1,9 +1,11 @@
-jQuery SubmitLock Plugin v1
-https://bitbucket.org/twigtek/jquery-plugins
+jQuery SubmitLock Plugin v1.1.0
+https://github.com/twigtek/jquery-submitlock
 
 
-This plugin will lock form buttons when a form is submitted in an attempt
-to prevent users from accidently double-posting forms.
+This plugin will lock the buttons on a form when it is submitted in an attempt
+to prevent users from accidently double-submitting forms.
+
+Requires jQuery v1.7+
 
 
 Usage:
@@ -12,15 +14,27 @@ Usage:
 
 Options:
     includeButtons
-        This is a boolean that tells the plugin to also lock <button/> and
-        <input type="button" /> buttons in addition to <input type="submit" />
-        buttons. Defaults to true.
+        This is a boolean that tells the plugin to also lock <button> and
+        <input type="button"> elements in addition to the usual
+        <input type="submit"> and <input type="image"> elements. Defaults
+        to true.
+
+    includeResets
+        This is a boolean that tells the plugin to also lock <input type="reset">
+        elements in addition to the usual <input type="submit"> and
+        <input type="image"> elements. Defaults to true.
 
     classes
-        This is a string of class names to assign to the buttons when they
+        This is a string of class names to assign to the elemnts when they
         are locked. Defaults to "submitLockDisabled".
 
     disable
         This is a boolean that tells the plugin whether or not to set the
-        "disabled" attribute on the buttons to "true". Defaults to false.
+        "disabled" attribute on the elements to "true". Defaults to false.
+
+
+Events:
+    locked
+        This event fires on the form after the plugin has completed its
+        locking activities.
 

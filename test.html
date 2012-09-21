@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>jQuery SubmitLock Plugin Testing</title>
+    <script src="http://code.jquery.com/jquery-1.4.4.min.js"></script>
+    <script src="jquery.submitlock.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Rig it so inputbuttons are capable of submitting forms.
+            $('input[type=button]').click(function() {
+                $(this).parent().submit();
+            });
+
+            // Stub out the forms so we don't actually go anywhere.
+            $('form').submit(function() {
+                console.log('submit ' + $(this).attr('id'));
+                return false;
+            });
+
+            $('form').submitLock();
+        });
+    </script>
+    <style type="text/css">
+        form {
+            margin-bottom: 2em;
+        }
+        .submitLockDisabled {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<form id="form_one">
+    <input type="submit" value="One: Submit" />
+</form>
+
+<form id="form_two">
+    <input type="submit" value="Two: Submit1" />
+    <input type="submit" value="Two: Submit2" />
+</form>
+
+<form id="form_three">
+    <input type="button" value="Three: InputButton" />
+</form>
+
+<form id="form_four">
+    <input type="button" value="Four: InputButton" />
+    <input type="submit" value="Four: Submit" />
+</form>
+
+<form id="form_five">
+    <button>Five: Button</button>
+</form>
+
+<form id="form_six">
+    <button>Six: Button</button>
+    <input type="submit" value="Six: Submit" />
+</form>
+
+<form id="form_seven">
+    <button>Seven: Button</button>
+    <input type="button" value="Seven: InputButton" />
+    <input type="submit" value="Seven: Submit" />
+</form>
+
+<form id="form_eight">
+    <a href="#somewhere"><button>Eight: Button</button></a>
+    <input type="submit" value="Eight: Submit" />
+</form>
+
+
+</body>
+</html>
+

@@ -12,8 +12,10 @@
         "url": "https://github.com/twigtek"
     },
     "licenses": [
-        "type": "MIT",
-        "url": "https://raw.github.com/twigtek/jquery-submitlock/v1.0.0/LICENSE"
+        {
+            "type": "MIT",
+            "url": "https://raw.github.com/twigtek/jquery-submitlock/v1.0.0/LICENSE"
+        }
     ],
     "dependencies": {
         "jquery": ">=1.7"

@@ -31,12 +31,6 @@
             // Tag them with the classes.
             $buttons.addClass(settings.classes);
 
-            // Remove any events that may have been attached to them.
-            $buttons.off('click');
-
-            // Prevent the default browser processing of the event.
-            $buttons.on('click', false);
-
             if (settings.disable) {
                 $buttons.attr('disabled', 'true');
             }
@@ -44,10 +38,15 @@
 
         return this.each(function() {
             var $form = $(this);
-
             if (!$form.is('form')) { return; }
 
-            $form.one('submit', function(event) {
+            $form.on('submit', function(event) {
+                if ($form.data('submitted') === true) {
+                    return false;
+                } else {
+                    $form.data('submitted', true);
+                }
+
                 lock($form.find('input[type=submit], input[type=image]'));
 
                 if (settings.includeButtons) {
@@ -57,20 +56,42 @@
 
                     // Sometimes <button>s get wrapped in an <a> to just act as a link.
                     // Take care of these, too.
-                    $buttons.parents('a')
-                        .off('click')
-                        .on('click', false)
-                        ;
+                    $buttons.parents('a').off('click');
                 }
 
                 if (settings.includeResets) {
                     lock($form.find('input[type=reset]'));
                 }
 
-                $form.trigger('locked');
             });
         });
     };
+
+    $.fn.removeLock = function(options) {
+        var settings = {
+            // The class(es) to remove to the elements being locked.
+            classes:        'submitLockDisabled',
+        };
+        if (options) {
+            $.extend(settings, options);
+        }
+
+        var $form = $(this);
+
+        function unlock($buttons) {
+            $buttons.removeClass(settings.classes);
+            $buttons.removeAttr('disabled');
+        }
+
+
+        return this.each(function() {
+            if ($form.is('form')) {
+                $form.data('submitted', false);
+                unlock($form.find('input[type=submit], input[type=image], input[type=button], input[type=reset]'));
+            }
+        });
+    };
+
 }(jQuery));
 
 /*
@@ -94,4 +115,3 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
